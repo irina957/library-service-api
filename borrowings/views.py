@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from borrowings.models import Borrowing
+from borrowings.notification_helper import send_telegram_notification
 from borrowings.serializers import BorrowingReadSerializer, BorrowingCreateSerializer
 
 
@@ -24,7 +25,18 @@ class BorrowingViewSet(
         return BorrowingReadSerializer
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        borrowing = serializer.save(user=self.request.user)
+
+        try:
+            message = (
+                f"New borrowing created!\n"
+                f"User: {borrowing.user.email}\n"
+                f"Book: {borrowing.book.title}\n"
+                f"Expected return: {borrowing.expected_return_date}"
+            )
+            send_telegram_notification(message)
+        except Exception as e:
+            print(f"Error sending telegram notification: {e}")
 
     def get_queryset(self):
         user = self.request.user
@@ -55,8 +67,10 @@ class BorrowingViewSet(
                 borrowing.actual_return_date = timezone.now().date()
                 book.save()
                 borrowing.save()
-                return Response(BorrowingReadSerializer(borrowing).data, status=status.HTTP_200_OK)
+                return Response(
+                    BorrowingReadSerializer(borrowing).data, status=status.HTTP_200_OK
+                )
         return Response(
             {"detail": "This borrowing has already been returned."},
-            status=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST,
         )
