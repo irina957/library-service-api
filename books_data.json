@@ -1,0 +1,35 @@
+[
+{
+  "model": "books.book",
+  "pk": 1,
+  "fields": {
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "cover": "HARD",
+    "inventory": 5,
+    "daily_fee": "2.00"
+  }
+},
+{
+  "model": "books.book",
+  "pk": 2,
+  "fields": {
+    "title": "1984",
+    "author": "George Orwell",
+    "cover": "SOFT",
+    "inventory": 7,
+    "daily_fee": "3.00"
+  }
+},
+{
+  "model": "books.book",
+  "pk": 3,
+  "fields": {
+    "title": "Refactoring",
+    "author": "Martin Fowler",
+    "cover": "HARD",
+    "inventory": 3,
+    "daily_fee": "2.00"
+  }
+}
+]
