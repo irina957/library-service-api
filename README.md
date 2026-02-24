@@ -13,36 +13,31 @@ A robust backend system for managing book borrowings. This project streamlines l
   - Environment variables managed via `python-dotenv` to keep API keys private.
 - **Filtering**: Advanced filtering for borrowings by user ID and active status.
 
-## ⚙️ Installation & Setup
+---
 
-**1. Clone the repository:**
+## 🐳 Quick Start with Docker
+
+1. **Clone the repository.**
+2. **Create a `.env` file** based on `.env.sample`.
+3. **Build and run the containers:**
 ```bash
-git clone https://github.com/irina957/library-service-api.git
-cd library-service-api
+   docker-compose up --build
 ```
 
-**2. Set up a virtual environment:**
+> The system will automatically wait for the database, run migrations, and load sample book data.
+
+4. **Access the API:**
+   - API Root: `http://localhost:8000/api/`
+   - Admin Panel: `http://localhost:8000/admin/`
+
+5. **Create your own admin:**
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+   docker-compose exec app python manage.py createsuperuser
 ```
 
-**3. Install dependencies:**
-```bash
-pip install -r requirements.txt
-```
+---
 
-**4. Configure environment variables:**
-
-Create a `.env` file in the root directory based on `.env.sample`:
-
-**5. Run migrations and start the server:**
-```bash
-python manage.py migrate
-python manage.py runserver
-```
-
-## API & Telegram Notifications
+## 🤖 API & Telegram Notifications
 
 When a user successfully creates a borrowing via `POST /api/borrowings/`, the Telegram bot immediately sends a notification:
 ```
